@@ -84,9 +84,9 @@ class updateUser {
 
   }
 
-  public static void main(String[] args) {
+  /*public static void main(String[] args) {
     updateUser upUser = new updateUser();
     upUser.createUser("SaifNIaz", "AA", 000100.00f);
-  }
+  }*/
 
 }
