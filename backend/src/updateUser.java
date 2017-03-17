@@ -2,30 +2,90 @@ import java.io.*;
 import java.util.*;
 
 class updateUser {
-    private static String fileName;
 
-    public updateUser(String file) {
-      fileName = file;
+  public boolean checkUser(String uname){
+    boolean check = false;
+    try {
+      File x = new File("current_user_accounts.txt");
+      Scanner sc = new Scanner(x);
+      while(sc.hasNext()) {
+        if(sc.next().equals(uname)){
+          System.out.println("TRUE!");
+          check = true;
+          break;
+        }
+      }
     }
-
-    public String getFileName() {
-      return fileName;
+    catch (FileNotFoundException e) {
+      System.out.println(e.getMessage());
     }
+    return check;
+  }
 
-    public void createUser(String cUser) {
-      transactionReader userReader = new transactionReader("currentaccounts.txt");
+  public void deleteUser(String uname){
+    if(!checkUser(uname)){
+      return;
+    }
+    try{
+      BufferedReader file = new BufferedReader(new FileReader("current_user_accounts.txt"));
+      String line;
+      String input = "";
+      while ((line = file.readLine()) != null){
+        input += line + '\n';
+        //System.out.println(line);
+      }
+      file.close();
 
-      char[] newUsr = cUser.toCharArray();
-      char[] usrInfo = new char[28];
+      input = input.replace(uname + "Delete", uname);
+      System.out.println(input);
+    }catch(Exception e) {
+        System.out.println(e.getMessage());
+    }
+  }
 
-      for (int i = 3; i < 31; i++) {
-        usrInfo[i-3] = newUsr[i];
+  public void createUser(String uname, String type, float credit){
+    if(checkUser(uname)){
+      System.out.println("ERROR: username exist");
+      return;
+    };
+    try{
+      Writer output;
+      output = new BufferedWriter(new FileWriter("current_user_accounts.txt", true));
+      int nameLength = uname.length();
+      int creditLength = String.valueOf(credit).length();
+      String zero= "";
+      String space = "";
+      for(int i = 0; i < (15 - nameLength); i++){
+        space += " ";
       }
 
-      String added = new String(usrInfo);
+      for(int j = 0; j < (9 - creditLength); j++){
+        zero += "0";
+      }
 
-      System.out.println(added);
 
-
+      output.append(uname + space + type + " " + zero + credit);
+      output.close();
+    }catch(Exception e) {
+        System.out.println(e.getMessage());
     }
+
+  }
+
+  public void gainCredit(String uname, float credit){
+    if(!checkUser(uname)){
+      System.out.println("ERROR: username does not exist");
+      return;
+    }
+
+  }
+
+  public void loseCredit(){
+
+  }
+
+  /*public static void main(String[] args) {
+    updateUser upUser = new updateUser();
+    upUser.createUser("SaifNIaz", "AA", 000100.00f);
+  }*/
 }
