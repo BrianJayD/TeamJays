@@ -37,7 +37,7 @@ class updateUser {
   }
 
   // Incomplete
-  public void deleteUser(String uname){
+  public void deleteUser(String uname) {
     if(!checkUser(uname)){
       return;
     }
@@ -58,7 +58,7 @@ class updateUser {
     }
   }
 
-  public void createUser(String cuString){
+  public void createUser(String cuString) {
     // Gets username of 15 characters from transaction string, which are
     // characters 3 to 18.
     String newUsr = cuString.substring(3, 18);
@@ -86,11 +86,11 @@ class updateUser {
 
   }
 
-  public void gainCredit(String uname, float credit){
+  public void gainCredit(String uname, float credit) {
     // TO DO
   }
 
-  public void loseCredit(){
+  public void loseCredit(String uname, float credit) {
     // TO DO
   }
 }

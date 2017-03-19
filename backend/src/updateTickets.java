@@ -42,7 +42,7 @@ class updateTickets {
     return false;
   }
 
-  public void newEvent(String neString){
+  public void newEvent(String neString) {
     // Get name of event and seller of 41 characters from transaction string,
     // which are charcters 3 to 44.
     String newEvnt = neString.substring(3, 44);
@@ -69,16 +69,15 @@ class updateTickets {
 
   }
 
-
-  public void buyTicket(){
+  public void buyTicket(String buyString) {
     // TO DO
   }
 
-  public void sellTicket(){
+  public void sellTicket(String sellString) {
     // TO DO
   }
 
-  public void deleteEvent(){
+  public void deleteEvent(String delString) {
     // TO DO
   }
 
