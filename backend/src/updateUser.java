@@ -2,26 +2,41 @@ import java.io.*;
 import java.util.*;
 
 class updateUser {
+  private static String accFile;
 
-  public boolean checkUser(String uname){
-    boolean check = false;
-    try {
-      File x = new File("current_user_accounts.txt");
-      Scanner sc = new Scanner(x);
-      while(sc.hasNext()) {
-        if(sc.next().equals(uname)){
-          System.out.println("TRUE!");
-          check = true;
-          break;
-        }
-      }
-    }
-    catch (FileNotFoundException e) {
-      System.out.println(e.getMessage());
-    }
-    return check;
+  public updateUser(String aFile) {
+    accFile = aFile;
   }
 
+  public updateUser() {}
+
+  public static String getAccFile() {
+    return accFile;
+  }
+
+  public static void setAccFile(String accFile) {
+    updateUser.accFile = accFile;
+  }
+
+  public boolean checkUser(String uname) {
+    transactionReader tRead =
+      new transactionReader("current_user_accounts_file.txt");
+
+    // Puts current users into an array list for comparing
+    ArrayList<String> usrInfo = tRead.readFile();
+
+    // Get usernames of 15 characters from the user array list and compare
+    // with username passed in this function and return true if found.
+    for (int i = 0; i < usrInfo.size(); i++) {
+      if (uname.equals(usrInfo.get(i).substring(0, 15))) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  // Incomplete
   public void deleteUser(String uname){
     if(!checkUser(uname)){
       return;
@@ -43,49 +58,39 @@ class updateUser {
     }
   }
 
-  public void createUser(String uname, String type, float credit){
-    if(checkUser(uname)){
+  public void createUser(String cuString){
+    // Gets username of 15 characters from transaction string, which are
+    // characters 3 to 18.
+    String newUsr = cuString.substring(3, 18);
+
+    // Performs a check to make sure that user does not exist, then writes to
+    // file.
+    if(checkUser(newUsr)){
       System.out.println("ERROR: username exist");
       return;
-    };
-    try{
-      Writer output;
-      output = new BufferedWriter(new FileWriter("current_user_accounts.txt", true));
-      int nameLength = uname.length();
-      int creditLength = String.valueOf(credit).length();
-      String zero= "";
-      String space = "";
-      for(int i = 0; i < (15 - nameLength); i++){
-        space += " ";
-      }
+    } else {
 
-      for(int j = 0; j < (9 - creditLength); j++){
-        zero += "0";
-      }
+      try{
+        Writer output;
+        output = new BufferedWriter(
+          new FileWriter(getAccFile(), true));
 
-
-      output.append(uname + space + type + " " + zero + credit);
-      output.close();
-    }catch(Exception e) {
+        // substring(3) cuts out the first 3 characters in the transaction
+        // string and appends to the file.
+        output.append(cuString.substring(3) + "\n");
+        output.close();
+      }catch(Exception e) {
         System.out.println(e.getMessage());
+      }
     }
 
   }
 
   public void gainCredit(String uname, float credit){
-    if(!checkUser(uname)){
-      System.out.println("ERROR: username does not exist");
-      return;
-    }
-
+    // TO DO
   }
 
   public void loseCredit(){
-
+    // TO DO
   }
-
-  /*public static void main(String[] args) {
-    updateUser upUser = new updateUser();
-    upUser.createUser("SaifNIaz", "AA", 000100.00f);
-  }*/
 }
