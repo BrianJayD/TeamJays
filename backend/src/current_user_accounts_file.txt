@@ -1,2 +1,3 @@
 admin           AA 000011.00
 RobinBanks      FS 000111.00
+deleteUser      FS 000010.00
