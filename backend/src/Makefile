@@ -1,4 +1,4 @@
-comp1: main.class comp
+main: main.class comp
 	java main
 
 comp: availabletickets.txt transaction_file.txt
