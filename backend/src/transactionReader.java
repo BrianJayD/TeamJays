@@ -61,6 +61,7 @@ class transactionReader {
         upT.newEvent(tActions.get(i));
       } else if (tNum.equals("04")) {
         // This is the buy transaction
+        upT.buyTicket(tActions.get(i));
       } else if (tNum.equals("05")) {
         // This is the refund transaction
       } else if (tNum.equals("06")) {

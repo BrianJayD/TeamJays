@@ -3,6 +3,7 @@ import java.io.*;
 
 class updateTickets {
   private static String evntFile;
+  ArrayList<String> evntInfo;
 
   // Constructor
   public updateTickets(String eFile) {
@@ -27,7 +28,7 @@ class updateTickets {
     transactionReader tr = new transactionReader("availabletickets.txt");
 
     // Puts event and ticket info in array list for comparing
-    ArrayList<String> evntInfo = tr.readFile();
+    evntInfo = tr.readFile();
 
     // Gets event name and seller name of the first 41 characters from array
     // list and compares with event name and seller name passed in this function
@@ -69,8 +70,54 @@ class updateTickets {
 
   }
 
-  public void buyTicket(String buyString) {
-    // TO DO
+  public void buyTicket(String neString) {
+    String newEvnt = neString.substring(3, 44);
+
+    if(!checkEvent(newEvnt)) {
+      System.out.println("ERROR: Event does not exist!");
+      return;
+    } else {
+      try{
+        Writer output;
+        output = new BufferedWriter(
+          new FileWriter(getEvntFile(), false));
+
+          int quan = Integer.parseInt(neString.substring(45,48));
+          int availableQuan = 0;
+          String availableQuanS = "";
+          for (int i = 0; i < evntInfo.size(); i++) {
+            if (newEvnt.equals(evntInfo.get(i).substring(0, 41))) {
+              availableQuanS = evntInfo.get(i).substring(43, 45);
+              availableQuan = Integer.parseInt(availableQuanS);
+              break;
+            }
+          }
+
+          if((availableQuan - quan) < 0 ){
+            System.out.println("ERROR: Not enough tickets left!");
+            return;
+          }
+          String newAvailability = "" + (availableQuan - quan);
+
+          ArrayList<String> newInfo = new ArrayList<String>();
+          for (int k = 0; k < evntInfo.size(); k++) {
+            if (evntInfo.get(k).contains(newEvnt)) {
+              newInfo.add(evntInfo.get(k).replace(availableQuanS, newAvailability));
+            }else{
+              newInfo.add(evntInfo.get(k));
+            }
+          }
+
+
+          for (int j = 0; j < newInfo.size(); j++) {
+            output.write(newInfo.get(j) + "\n");
+          }
+
+        output.close();
+      }catch(Exception e) {
+        System.out.println(e.getMessage());
+      }
+    }
   }
 
   public void sellTicket(String sellString) {

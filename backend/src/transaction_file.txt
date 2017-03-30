@@ -3,3 +3,4 @@
 02 deleteUser      FS 000010.00
 00 admin           AA 000001.00
 00 sellstandard    SS 000001.00
+04 preMadeEvent              preSetSeller    002 001.00
