@@ -57,10 +57,12 @@ class transactionReader {
         upU.createUser(tActions.get(i));
       } else if (tNum.equals("02")) {
         // This is the delete transaction
+	upT.deleteEvent(tActions.get(i));
       } else if (tNum.equals("03")) {
         upT.newEvent(tActions.get(i));
       } else if (tNum.equals("04")) {
         // This is the buy transaction
+        upT.buyTicket(tActions.get(i));
       } else if (tNum.equals("05")) {
         // This is the refund transaction
       } else if (tNum.equals("06")) {
