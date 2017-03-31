@@ -86,9 +86,8 @@ class updateTickets {
   public void buyTicket(String accntFile, String neString) {
     String newEvnt = neString.substring(3, 44);
     String seller = neString.substring(29, 44);
-    String cost = neString.substring(46);
-
-    System.out.println(cost);
+    String uName = neString.substring(29,44);
+    String cost = neString.substring(49);
 
     ArrayList<String> newTickets = new ArrayList<String>();
     ArrayList<String> oldTickets = new ArrayList<String>();
@@ -126,7 +125,10 @@ class updateTickets {
               newTickets.add(oldTickets.get(i) + "\n");
             } else {
               String newAvailability = "" + (availableQuan - quan);
+              // Replaces ticket line info with new available tickets
               newTickets.add(evntInfo.get(i).replace(availableQuanS, newAvailability) + "\n");
+              // Applies credit update to seller
+              sellerUpdate(accntFile, uName, cost);
             }
           } else {
             newTickets.add(oldTickets.get(i) + "\n");
@@ -146,7 +148,6 @@ class updateTickets {
         System.out.println(e.getMessage());
       }
 
-      //sellerUpdate(accntFile, , String);
 
     }
   }
@@ -184,7 +185,8 @@ class updateTickets {
     }
   }
 
-
+  // Updates sellers credits. Need to implement subtraction of credit.
+  // Right now only replaces credit with 'cost'.
   public void sellerUpdate(String accntFile, String seller, String cost) {
     try {
       BufferedReader file =
@@ -201,11 +203,13 @@ class updateTickets {
 
       file.close();
 
+      Double costDouble = Double.parseDouble(cost);
+
       for (int i = 0; i < oldContents.size(); i++) {
         if (oldContents.get(i).substring(0,15).equals(seller)) {
           newContents.add(oldContents.get(i).replace(oldContents.get(i),
           oldContents.get(i).substring(0,19) +
-          cost + "\n"));
+          df.format(costDouble) + "\n"));
         } else {
           newContents.add(oldContents.get(i) + "\n");
         }
