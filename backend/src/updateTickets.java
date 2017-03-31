@@ -1,9 +1,11 @@
 import java.util.*;
 import java.io.*;
+import java.text.DecimalFormat;
 
 class updateTickets {
   private static String evntFile;
   ArrayList<String> evntInfo;
+  DecimalFormat df = new DecimalFormat("000000.00");
 
   // Constructor
   public updateTickets(String eFile) {
@@ -81,55 +83,72 @@ class updateTickets {
 
   }
 
-  public void buyTicket(String neString) {
+  public void buyTicket(String accntFile, String neString) {
     String newEvnt = neString.substring(3, 44);
+    String seller = neString.substring(29, 44);
+    String cost = neString.substring(46);
 
+    System.out.println(cost);
+
+    ArrayList<String> newTickets = new ArrayList<String>();
+    ArrayList<String> oldTickets = new ArrayList<String>();
     if(!checkEvent(newEvnt)) {
       System.out.println("ERROR: Event does not exist!");
-      return;
     } else {
       try{
-        Writer output;
-        output = new BufferedWriter(
-          new FileWriter(getEvntFile(), false));
+        BufferedReader file = new BufferedReader(new FileReader(getEvntFile()));
+        String line;
+        String input = "";
 
-          int quan = Integer.parseInt(neString.substring(45,48));
-          int availableQuan = 0;
-          String availableQuanS = "";
-          for (int i = 0; i < evntInfo.size(); i++) {
-            if (newEvnt.equals(evntInfo.get(i).substring(0, 41))) {
-              availableQuanS = evntInfo.get(i).substring(43, 45);
-              availableQuan = Integer.parseInt(availableQuanS);
-              break;
+        // Reads lines in availabletickets.txt and copies lines into an
+        // ArrayList
+        while((line = file.readLine()) != null) {
+          input = line;
+          oldTickets.add(input);
+        }
+
+        // Gets quantity of tickets
+        int quan = Integer.parseInt(neString.substring(45,48));
+        int availableQuan = 0;
+        String availableQuanS = "";
+
+        for (int i = 0; i < oldTickets.size(); i++) {
+          // If eventname equals the event being bought, get the quantity
+          if (newEvnt.equals(oldTickets.get(i).substring(0, 41))) {
+            availableQuanS = oldTickets.get(i).substring(43, 45);
+            availableQuan = Integer.parseInt(availableQuanS);
+            // If remaining tickets are below 0, do not apply change and copy line
+            // into newTickets ArrayList.
+            // If remaining ticket are 0 or above, apply change and copy into
+            // newTickets ArrayList.
+            if ((availableQuan - quan) < 0) {
+              System.out.println("Error: Not enough tickets left");
+              newTickets.add(oldTickets.get(i) + "\n");
+            } else {
+              String newAvailability = "" + (availableQuan - quan);
+              newTickets.add(evntInfo.get(i).replace(availableQuanS, newAvailability) + "\n");
             }
+          } else {
+            newTickets.add(oldTickets.get(i) + "\n");
           }
+        }
 
-          if((availableQuan - quan) < 0 ){
-            System.out.println("ERROR: Not enough tickets left!");
-            return;
-          }
-          String newAvailability = "" + (availableQuan - quan);
+        // Write newTickets ArrayList into the file.
+        FileOutputStream output =
+          new FileOutputStream(getEvntFile());
+        for (int i = 0; i < newTickets.size(); i++) {
+          output.write(newTickets.get(i).getBytes());
+        }
 
-          ArrayList<String> newInfo = new ArrayList<String>();
-          for (int k = 0; k < evntInfo.size(); k++) {
-            if (evntInfo.get(k).contains(newEvnt)) {
-              newInfo.add(evntInfo.get(k).replace(availableQuanS, newAvailability));
-            }else{
-              newInfo.add(evntInfo.get(k));
-            }
-          }
-          for (int j = 0; j < newInfo.size(); j++) {
-            output.write(newInfo.get(j) + "\n");
-          }
         output.close();
-      }catch(Exception e) {
+
+      } catch(Exception e) {
         System.out.println(e.getMessage());
       }
-    }
-  }
 
-  public void sellTicket(String sellString) {
-    // TO DO
+      //sellerUpdate(accntFile, , String);
+
+    }
   }
 
   public void deleteEvent(String neString) {
@@ -164,4 +183,47 @@ class updateTickets {
       System.out.println(e.getMessage());
     }
   }
+
+
+  public void sellerUpdate(String accntFile, String seller, String cost) {
+    try {
+      BufferedReader file =
+        new BufferedReader(new FileReader(accntFile));
+      String line;
+      String input = "";
+      String check = "";
+      ArrayList<String> oldContents = new ArrayList<String>();
+      ArrayList<String> newContents = new ArrayList<String>();
+      while ((line = file.readLine()) != null) {
+        input = line + "\n";
+        oldContents.add(line);
+      }
+
+      file.close();
+
+      for (int i = 0; i < oldContents.size(); i++) {
+        if (oldContents.get(i).substring(0,15).equals(seller)) {
+          newContents.add(oldContents.get(i).replace(oldContents.get(i),
+          oldContents.get(i).substring(0,19) +
+          cost + "\n"));
+        } else {
+          newContents.add(oldContents.get(i) + "\n");
+        }
+        System.out.println(oldContents.get(i) + " | " + newContents.get(i));
+      }
+
+
+      FileOutputStream fOut =
+        new FileOutputStream(accntFile);
+      for (int i = 0; i < newContents.size(); i++) {
+        fOut.write(newContents.get(i).getBytes());
+      }
+
+      fOut.close();
+
+    } catch (Exception e) {
+      System.err.println("Error: Cannot read file.");
+    }
+  }
+
 }
