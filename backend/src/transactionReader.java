@@ -57,6 +57,7 @@ class transactionReader {
         upU.createUser(tActions.get(i));
       } else if (tNum.equals("02")) {
         // This is the delete transaction
+	upT.deleteEvent(tActions.get(i));
       } else if (tNum.equals("03")) {
         upT.newEvent(tActions.get(i));
       } else if (tNum.equals("04")) {

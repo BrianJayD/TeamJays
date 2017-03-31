@@ -38,8 +38,19 @@ class updateTickets {
         return true;
       }
     }
+    return false;
+  }
 
+  public boolean checkUserEvent(String user){
+    transactionReader tr = new transactionReader("availabletickets.txt");
 
+    evntInfo = tr.readFile();
+
+    for (int i = 0; i < evntInfo.size(); i++) {
+      if (evntInfo.get(i).contains(user)) {
+        return true;
+      }
+    }
     return false;
   }
 
@@ -107,12 +118,9 @@ class updateTickets {
               newInfo.add(evntInfo.get(k));
             }
           }
-
-
           for (int j = 0; j < newInfo.size(); j++) {
             output.write(newInfo.get(j) + "\n");
           }
-
         output.close();
       }catch(Exception e) {
         System.out.println(e.getMessage());
@@ -124,8 +132,36 @@ class updateTickets {
     // TO DO
   }
 
-  public void deleteEvent(String delString) {
+  public void deleteEvent(String neString) {
     // TO DO
-  }
+    String deleteUser = neString.substring(3, 17);
 
+    if(!checkUserEvent(deleteUser)){
+      System.out.println("User does not have any events!");
+      return;
+    }
+
+    try{
+      Writer output;
+      output = new BufferedWriter(
+        new FileWriter(getEvntFile(), false));
+
+      ArrayList<String> newInfo = new ArrayList<String>();
+      for (int k = 0; k < evntInfo.size(); k++) {
+        if (evntInfo.get(k).contains(deleteUser)) {
+          //DO not add
+        }else{
+          newInfo.add(evntInfo.get(k));
+        }
+      }
+      
+      for (int j = 0; j < newInfo.size(); j++) {
+        output.write(newInfo.get(j) + "\n");
+      }
+
+      output.close();
+    }catch(Exception e){
+      System.out.println(e.getMessage());
+    }
+  }
 }
