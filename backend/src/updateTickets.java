@@ -154,7 +154,7 @@ class updateTickets {
           newInfo.add(evntInfo.get(k));
         }
       }
-      
+
       for (int j = 0; j < newInfo.size(); j++) {
         output.write(newInfo.get(j) + "\n");
       }

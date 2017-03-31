@@ -4,24 +4,18 @@ import java.util.*;
 class transactionReader {
   private static String fileName;
 
-
-  // Constructor for transactionReader
   public transactionReader(String file) {
     fileName = file;
   }
 
-  // Function to get file name
 	public static String getFileName() {
 		return fileName;
 	}
 
-  // Function to set file name
 	public static void setFileName(String fileName) {
 		transactionReader.fileName = fileName;
 	}
 
-  // readFile() reads the file and returns the transaction strings into an
-  // array list
   public ArrayList<String> readFile() {
 
     ArrayList<String> trnactns = new ArrayList<String>();
@@ -42,6 +36,18 @@ class transactionReader {
     return trnactns;
   }
 
+  public String getTransNum(String t) {
+    char[] tChar = t.toCharArray();
+    char[] tNum = new char[2];
+
+    for (int i = 0; i < 2; i++) {
+      tNum[i] = (tChar[i]);
+    }
+
+    String strNum = new String(tNum);
+    return strNum;
+  }
+
   // This function will run through the transaction array list, gets the
   // transaction number from the line and performs the corresponding update
   // function.
@@ -56,21 +62,22 @@ class transactionReader {
       } else if (tNum.equals("01")) {
         upU.createUser(tActions.get(i));
       } else if (tNum.equals("02")) {
-        // This is the delete transaction
-	upT.deleteEvent(tActions.get(i));
+        upU.deleteUser(tActions.get(i));
       } else if (tNum.equals("03")) {
         upT.newEvent(tActions.get(i));
       } else if (tNum.equals("04")) {
         // This is the buy transaction
-        upT.buyTicket(tActions.get(i));
       } else if (tNum.equals("05")) {
         // This is the refund transaction
       } else if (tNum.equals("06")) {
-        // This is the add credit transaction
+        upU.gainCredit(tActions.get(i));
       } else {
         System.out.println("Error: Transaction does not exist.");
       }
     }
+
   }
+
+
 
 }
