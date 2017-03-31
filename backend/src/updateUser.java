@@ -127,12 +127,14 @@ class updateUser {
     String toUser = refString.substring(3,18);
     String frmUser = refString.substring(19, 34);
     String refAmt = refString.substring(35);
+    String usrType = userInfo(toUser).substring(16,19);
 
     // Reformat refund string into a addCredit transaction string
-    String gcString = "06" + refString.substring(2, 16) + "|" ;
-    System.out.println(gcString);
-
-    //loseCredit(frmUser, refAmt);
+    String gcString = "06" + refString.substring(2, 19) + usrType + refAmt;
+    //System.out.println(gcString);
+    //System.out.println("XX_UUUUUUUUUUUUUUU_TT_CCCCCCCCC");
+    gainCredit(gcString);
+    loseCredit(frmUser, refAmt);
 
   }
 
