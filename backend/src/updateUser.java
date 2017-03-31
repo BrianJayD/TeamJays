@@ -39,7 +39,6 @@ class updateUser {
     return false;
   }
 
-  // Incomplete
   public void deleteUser(String duString) {
     String uname = duString.substring(3, 18);
     String ui = userInfo(uname);
@@ -81,7 +80,6 @@ class updateUser {
 
   }
 
-  // Need to implement checks
   public void gainCredit(String gcString) {
     String uname = gcString.substring(3,18);
     String credit = gcString.substring(22);
@@ -99,12 +97,15 @@ class updateUser {
 
     //Now get users current credit
     String uInfo = userInfo(uname);
-    Double inAcc = Double.parseDouble(uInfo.substring(19)) + toAcc;
+    Double newBal = Double.parseDouble(uInfo.substring(19)) + toAcc;
 
-    updateInfo(gcString.substring(0,2), uname, df2.format(inAcc));
+    if (newBal > 999999) {
+      System.out.println("Error: Cannot exceed maximum credit limit (999999.00)");
+    } else {
+      updateInfo(gcString.substring(0,2), uname, df2.format(newBal));
+    }
   }
 
-  // Need to implement checks
   public void loseCredit(String uName, String toLose) {
     String uInfo = userInfo(uName);
     int notZero = 0;
@@ -117,9 +118,14 @@ class updateUser {
     }
 
     Double giveCred = Double.parseDouble(toLose.substring(notZero));
-    Double newBal = Double.parseDouble(uInfo.substring(19)) - giveCred;;
+    Double newBal = Double.parseDouble(uInfo.substring(19)) - giveCred;
 
-    updateInfo("05", uName, df2.format(newBal));
+    if (newBal < 0) {
+      System.out.println("Error: Insufficient funds");
+    } else {
+      updateInfo("05", uName, df2.format(newBal));
+    }
+
 
   }
 
@@ -131,8 +137,7 @@ class updateUser {
 
     // Reformat refund string into a addCredit transaction string
     String gcString = "06" + refString.substring(2, 19) + usrType + refAmt;
-    //System.out.println(gcString);
-    //System.out.println("XX_UUUUUUUUUUUUUUU_TT_CCCCCCCCC");
+
     gainCredit(gcString);
     loseCredit(frmUser, refAmt);
 
@@ -141,7 +146,7 @@ class updateUser {
   // Returns user info as a string
   public String userInfo(String uname) {
     transactionReader tRead =
-      new transactionReader("current_user_accounts_file.txt");
+      new transactionReader(getAccFile());
 
     // Puts current users into an array list for comparing
     ArrayList<String> usrInfo = tRead.readFile();
@@ -162,7 +167,7 @@ class updateUser {
   public void updateInfo(String type, String uName, String toReplace) {
     try {
       BufferedReader file =
-        new BufferedReader(new FileReader("current_user_accounts_file.txt"));
+        new BufferedReader(new FileReader(getAccFile()));
       String line;
       String input = "";
       String check = "";
@@ -195,7 +200,7 @@ class updateUser {
       }
 
       FileOutputStream fOut =
-        new FileOutputStream("current_user_accounts_file.txt");
+        new FileOutputStream(getAccFile());
       for (int i = 0; i < newContents.size(); i++) {
         fOut.write(newContents.get(i).getBytes());
       }
