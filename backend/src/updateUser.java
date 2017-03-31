@@ -42,10 +42,12 @@ class updateUser {
   // Incomplete
   public void deleteUser(String duString) {
     String uname = duString.substring(3, 18);
-
+    String ui = userInfo(uname);
     if(!checkUser(uname)){
       System.out.println("User does not exist");
       return;
+    } else if (ui.substring(16,18).equals("  ")) {
+      System.out.println("User has already been deleted");
     } else {
       updateInfo(duString.substring(0,2), uname, "  ");
     }
@@ -79,19 +81,20 @@ class updateUser {
 
   }
 
+  // Need to implement checks
   public void gainCredit(String gcString) {
     String uname = gcString.substring(3,18);
     String credit = gcString.substring(22);
-    int sInd = 0;
+    int notZero = 0;
     for (int i = 0; i < credit.length(); i++) {
       if (credit.charAt(i) == '0') {
-        sInd++;
+        notZero++;
       } else if (credit.charAt(i) != 0) {
         break;
       }
     }
 
-    String toConv = credit.substring(sInd);
+    String toConv = credit.substring(notZero);
     Double toAcc = Double.parseDouble(toConv);
 
     //Now get users current credit
@@ -101,7 +104,35 @@ class updateUser {
     updateInfo(gcString.substring(0,2), uname, df2.format(inAcc));
   }
 
-  public void loseCredit(String lcString) {
+  // Need to implement checks
+  public void loseCredit(String uName, String toLose) {
+    String uInfo = userInfo(uName);
+    int notZero = 0;
+    for (int i = 0; i < toLose.length(); i++) {
+      if (toLose.charAt(i) == '0') {
+        notZero++;
+      } else if (toLose.charAt(i) != 0) {
+        break;
+      }
+    }
+
+    Double giveCred = Double.parseDouble(toLose.substring(notZero));
+    Double newBal = Double.parseDouble(uInfo.substring(19)) - giveCred;;
+
+    updateInfo("05", uName, df2.format(newBal));
+
+  }
+
+  public void refund(String refString) {
+    String toUser = refString.substring(3,18);
+    String frmUser = refString.substring(19, 34);
+    String refAmt = refString.substring(35);
+
+    // Reformat refund string into a addCredit transaction string
+    String gcString = "06" + refString.substring(2, 16) + "|" ;
+    System.out.println(gcString);
+
+    //loseCredit(frmUser, refAmt);
 
   }
 
@@ -141,14 +172,18 @@ class updateUser {
       }
 
       file.close();
+
+      // Checks the type for what update to performs
+      // 02 = Delete. Takes off user type.
+      // 05 = Lose Credit. Take out credit from user info.
+      // 06 = Gain credit. Adds credit to user info.
       for (int i = 0; i < oldContents.size(); i++) {
         if (oldContents.get(i).substring(0,15).equals(uName)) {
           if (type.equals("02")) {
             newContents.add(oldContents.get(i).replace(oldContents.get(i),
               oldContents.get(i).substring(0,16) + toReplace +
               oldContents.get(i).substring(18) + "\n"));
-          }
-          else if (type.equals("06")) {
+          } else if (type.equals("05") || type.equals("06")) {
             newContents.add(oldContents.get(i).replace(oldContents.get(i),
               oldContents.get(i).substring(0,19) + toReplace + "\n"));
           }
