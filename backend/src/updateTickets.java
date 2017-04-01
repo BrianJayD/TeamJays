@@ -259,4 +259,6 @@ class updateTickets {
    return input;
   }
 
+  public void buyerUpdate() {}
+
 }
