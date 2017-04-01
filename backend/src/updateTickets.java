@@ -84,7 +84,7 @@ class updateTickets {
 
   }
 
-  public void buyTicket(String accntFile, String neString) {
+  public void buyTicket(String tranFile, String accntFile, String neString) {
     String newEvnt = neString.substring(3, 44);
     String seller = neString.substring(29, 44);
     String uName = neString.substring(29,44);
@@ -106,6 +106,7 @@ class updateTickets {
           input = line;
           oldTickets.add(input);
         }
+        file.close();
 
         // Gets quantity of tickets
         int quan = Integer.parseInt(neString.substring(45,48));
@@ -115,7 +116,7 @@ class updateTickets {
         for (int i = 0; i < oldTickets.size(); i++) {
           // If eventname equals the event being bought, get the quantity
           if (newEvnt.equals(oldTickets.get(i).substring(0, 41))) {
-            availableQuanS = oldTickets.get(i).substring(43, 45);
+            availableQuanS = oldTickets.get(i).substring(42, 45);
             availableQuan = Integer.parseInt(availableQuanS);
             // If remaining tickets are below 0, do not apply change and copy line
             // into newTickets ArrayList.
@@ -130,6 +131,8 @@ class updateTickets {
               newTickets.add(evntInfo.get(i).replace(tix.format(availableQuan), tix.format(newAvailability)) + "\n");
               // Applies credit update to seller
               sellerUpdate(accntFile, uName, neString.substring(45, 48), cost);
+
+              buyerUpdate(tranFile, accntFile, uName, neString.substring(45,48), cost);
             }
           } else {
             newTickets.add(oldTickets.get(i) + "\n");
@@ -259,6 +262,76 @@ class updateTickets {
    return input;
   }
 
-  public void buyerUpdate() {}
+  public void buyerUpdate(String tranFile, String accFile, String seller, String amt, String cost) {
+    try {
+      // Read transaction file put contents in ArrayList
+      BufferedReader br = new BufferedReader(new FileReader(tranFile));
+      ArrayList<String> trans = new ArrayList<String>();
+      String line, line2;
+      while ((line = br.readLine()) != null) {
+        trans.add(line);
+      }
+      br.close();
+
+      // This gets the index of the sell transaction
+      int sellIndex = 0;
+      for (int i = 0; i < trans.size(); i++) {
+        if (trans.get(i).contains("03") && trans.get(i).contains(seller)) {
+          sellIndex = i;
+        }
+      }
+
+      // Searches for the next logout transaction line in order to obtain the
+      // buyer's username.
+      String buyerString = "";
+      for (int j = sellIndex; j < trans.size(); j++) {
+        if (trans.get(j).substring(0,2).contains("00")) {
+          buyerString = trans.get(j).substring(3,18);
+          break;
+        }
+      }
+
+      // Reads accounts file and puts into ArrayList
+      BufferedReader br2 = new BufferedReader(new FileReader(accFile));
+      ArrayList<String> accOld = new ArrayList<String>();
+      while ((line2 = br2.readLine()) != null) {
+        accOld.add(line2);
+      }
+      br2.close();
+
+      // Iterates through old ArrayList and updates buyers credit.
+      // Places them into new array to write to file.
+      ArrayList<String> accNew = new ArrayList<String>();
+      for (int k = 0; k < accOld.size(); k++) {
+        if (accOld.get(k).contains(buyerString)) {
+          Double dCost = Double.parseDouble(cost);
+          Double dAmt = Double.parseDouble(amt);
+          Double total = dCost * dAmt;
+          Double newBal = Double.parseDouble(accOld.get(k).substring(19)) - total;
+
+          if (newBal < 0) {
+            System.out.println("Error: Insufficient funds");
+            accNew.add(accOld.get(k) + "\n");
+          } else {
+            accNew.add(accOld.get(k).replace(accOld.get(k),
+            accOld.get(k).substring(0,19) + df.format(newBal) + "\n"));
+          }
+        } else {
+          accNew.add(accOld.get(k) + "\n");
+        }
+      }
+
+      // Write new contents into file
+      FileOutputStream fOut = new FileOutputStream(accFile);
+      for (int l = 0; l < accNew.size(); l++) {
+        fOut.write(accNew.get(l).getBytes());
+      }
+      fOut.close();
+
+
+    } catch (Exception e) {
+      System.err.println("Error: Cannot read file");
+    }
+  }
 
 }

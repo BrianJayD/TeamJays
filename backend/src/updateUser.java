@@ -138,8 +138,19 @@ class updateUser {
     // Reformat refund string into a addCredit transaction string
     String gcString = "06" + refString.substring(2, 19) + usrType + refAmt;
 
-    gainCredit(gcString);
-    loseCredit(frmUser, refAmt);
+    Double rA = Double.parseDouble(refAmt);
+
+    Double toCred = Double.parseDouble(userInfo(toUser).substring(19)) + rA;
+    Double frmCred = Double.parseDouble(userInfo(frmUser).substring(19)) - rA;
+
+    if (toCred <= 999999 && frmCred >= 0) {
+      gainCredit(gcString);
+      loseCredit(frmUser, refAmt);
+    } else if (toCred > 999999) {
+      System.out.println("Error: Buyer cannot exceed maximum credit limit");
+    } else if (frmCred < 0) {
+      System.out.println("Error: Seller has insufficient funds");
+    }
 
   }
 

@@ -66,9 +66,9 @@ class transactionReader {
       } else if (tNum.equals("03")) {
         upT.newEvent(tActions.get(i));
       } else if (tNum.equals("04")) {
-        // This is the buy transaction
+        upT.buyTicket(getFileName(), uFile, tActions.get(i));
       } else if (tNum.equals("05")) {
-        // This is the refund transaction
+        upU.refund(tActions.get(i));
       } else if (tNum.equals("06")) {
         upU.gainCredit(tActions.get(i));
       } else {
