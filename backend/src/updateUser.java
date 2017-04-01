@@ -31,7 +31,7 @@ class updateUser {
     // Get usernames of 15 characters from the user array list and compare
     // with username passed in this function and return true if found.
     for (int i = 0; i < usrInfo.size(); i++) {
-      if (uname.equals(usrInfo.get(i).substring(0, 15))) {
+      if(usrInfo.get(i).contains(uname)) {
         return true;
       }
     }

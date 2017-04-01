@@ -37,7 +37,7 @@ class updateTickets {
     // list and compares with event name and seller name passed in this function
     // and return true if found.
     for (int i = 0; i < evntInfo.size(); i++) {
-      if (event.equals(evntInfo.get(i).substring(0, 41))) {
+      if (evntInfo.get(i).contains(event)) {
         return true;
       }
     }
