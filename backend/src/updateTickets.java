@@ -6,6 +6,7 @@ class updateTickets {
   private static String evntFile;
   ArrayList<String> evntInfo;
   DecimalFormat df = new DecimalFormat("000000.00");
+  DecimalFormat tix = new DecimalFormat("000");
 
   // Constructor
   public updateTickets(String eFile) {
@@ -124,11 +125,11 @@ class updateTickets {
               System.out.println("Error: Not enough tickets left");
               newTickets.add(oldTickets.get(i) + "\n");
             } else {
-              String newAvailability = "" + (availableQuan - quan);
+              int newAvailability = availableQuan - quan;
               // Replaces ticket line info with new available tickets
-              newTickets.add(evntInfo.get(i).replace(availableQuanS, newAvailability) + "\n");
+              newTickets.add(evntInfo.get(i).replace(tix.format(availableQuan), tix.format(newAvailability)) + "\n");
               // Applies credit update to seller
-              sellerUpdate(accntFile, uName, cost);
+              sellerUpdate(accntFile, uName, neString.substring(45, 48), cost);
             }
           } else {
             newTickets.add(oldTickets.get(i) + "\n");
@@ -185,9 +186,7 @@ class updateTickets {
     }
   }
 
-  // Updates sellers credits. Need to implement subtraction of credit.
-  // Right now only replaces credit with 'cost'.
-  public void sellerUpdate(String accntFile, String seller, String cost) {
+  public void sellerUpdate(String accntFile, String seller, String amt, String cost) {
     try {
       BufferedReader file =
         new BufferedReader(new FileReader(accntFile));
@@ -205,29 +204,59 @@ class updateTickets {
 
       Double costDouble = Double.parseDouble(cost);
 
-      for (int i = 0; i < oldContents.size(); i++) {
-        if (oldContents.get(i).substring(0,15).equals(seller)) {
-          newContents.add(oldContents.get(i).replace(oldContents.get(i),
-          oldContents.get(i).substring(0,19) +
-          df.format(costDouble) + "\n"));
-        } else {
-          newContents.add(oldContents.get(i) + "\n");
+      // Get sellers credit
+      String uCred = userCredit(accntFile, seller).substring(19);
+
+      Double ticAmt = Double.parseDouble(amt);
+
+      Double newCredit = Double.parseDouble(uCred) + (costDouble * ticAmt);
+
+      if (newCredit > 999999) {
+        System.out.println("Error: User cannot exceed maximum credit limit");
+      } else {
+        for (int i = 0; i < oldContents.size(); i++) {
+          if (oldContents.get(i).substring(0,15).equals(seller)) {
+            newContents.add(oldContents.get(i).replace(oldContents.get(i),
+            oldContents.get(i).substring(0,19) +
+            df.format(newCredit) + "\n"));
+          } else {
+            newContents.add(oldContents.get(i) + "\n");
+          }
+          System.out.println(oldContents.get(i) + " | " + newContents.get(i));
         }
-        System.out.println(oldContents.get(i) + " | " + newContents.get(i));
-      }
 
 
-      FileOutputStream fOut =
+        FileOutputStream fOut =
         new FileOutputStream(accntFile);
-      for (int i = 0; i < newContents.size(); i++) {
-        fOut.write(newContents.get(i).getBytes());
-      }
+        for (int i = 0; i < newContents.size(); i++) {
+          fOut.write(newContents.get(i).getBytes());
+        }
 
-      fOut.close();
+        fOut.close();
+      }
 
     } catch (Exception e) {
       System.err.println("Error: Cannot read file.");
     }
+  }
+
+  public String userCredit(String accFile, String user) {
+    String input = "";
+    try {
+     BufferedReader file = new BufferedReader(new FileReader(accFile));
+     String line;
+     while((line = file.readLine()) != null) {
+       if (line.contains(user)) {
+         input = line;
+       }
+     }
+
+     return input;
+
+   } catch (Exception e) {
+     System.err.println("Error: File not found");
+   }
+   return input;
   }
 
 }
