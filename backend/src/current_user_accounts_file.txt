@@ -1,4 +1,6 @@
-admin           AA 000011.00
-RobinBanks      FS 000111.00
-deleteUser      FS 000010.00
+admin           AA 004000.00
+RobinBanks      FS 001000.00
+deleteUser         999999.00
+buystandard     BS 001000.00
+sellstandard    SS 001000.00
 brian           FS 000009.00
