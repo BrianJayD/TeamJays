@@ -1,0 +1,4 @@
+**How to run:**
+
+- Redirect working directory to '/backend/src/'
+- Either run './backend.sh' or 'make
