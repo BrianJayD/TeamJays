@@ -8,6 +8,8 @@ cd ..
 
 javac -d ./ back/main.java back/transactionReader.java back/updateTickets.java back/updateUser.java
 
+rm *.class
+
 ./front/ticket-seller < input/daily_test.inp
 
 java main
