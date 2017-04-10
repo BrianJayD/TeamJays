@@ -13,16 +13,16 @@ using namespace std;
 vector<Event> events;
 Event currEvent;
 
-/* given the seller and event name, check if the seller is 
-   selling tickets for that event 
+/* given the seller and event name, check if the seller is
+   selling tickets for that event
 */
 bool eventExists(string seller, string title) {
     for (int i=0; i <events.size(); i++) {
 		if( toLower(events[i].title) == toLower(title) &&
-		toLower(events[i].seller) == toLower(seller) ) { 
+		toLower(events[i].seller) == toLower(seller) ) {
 			currEvent = events[i];
 			return true;
-		}   
+		}
     } return false;
 }
 
@@ -33,20 +33,20 @@ void loadEvents() {
 	infile.open("availabletickets.txt");
 
 	int pos,j, i = 0;
-	while( getline(infile, str) ) 
-	{	
-		if(str.substr(0,3) == "END") {break;}
-		
+	while( getline(infile, str) )
+	{
+		if(str.substr(0,3).empty()) {break;}
+
 		events.push_back(Event());
 
 		//set event name
 		pos = str.substr(0,25).find_last_not_of(' ');
 		events[i].title = str.substr(0,pos+1);
 
-		//set seller name 
+		//set seller name
 		pos = str.substr(26,15).find_last_not_of(' ');
 		events[i].seller = str.substr(26,pos+1);
-		
+
 		//set ticket count
 		events[i].ticket_count = stoi(str.substr(42,3));
 
@@ -62,18 +62,17 @@ bool isValidEvent(string transac,string title,string seller) {
 	if ( length == 0 || length > 25 ) {
 		cout << "Error: Invalid title.\n";
 		return false;
-	} 
+	}
 	else if(transac == "03") {
 		if( eventExists(seller,title) ) {
 			cout << "Error: You have an event with this name.\n";
 			return false;
 		}return true;
 	} else {
-		if( !eventExists(seller, title) ) { 
+		if( !eventExists(seller, title) ) {
 			cout << "Error: This user is not selling tickets for this event.\n";
 			return false;
-		} 
+		}
 		return true;
-	} 
+	}
 }
-

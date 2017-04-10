@@ -312,7 +312,7 @@ void loadUsers() {
 		// set credit
 		credit = stof(str.substr(19,9));
 
-		if(str.substr(0,3) == "END") { break;}
+		if(str.substr(0,3).empty()) { break;}
 
 		User *newUser;
 		if(type == "AA")
