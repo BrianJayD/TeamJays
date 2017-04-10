@@ -11,4 +11,3 @@ minSeller       SS 000000.00
 minBuyer        BS 000000.00
 maxBuyer        BS 999999.00
 noFunds         FS 000000.00
-END                000000000
