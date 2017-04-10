@@ -225,7 +225,6 @@ class updateTickets {
           } else {
             newContents.add(oldContents.get(i) + "\n");
           }
-          System.out.println(oldContents.get(i) + " | " + newContents.get(i));
         }
 
 
