@@ -2,4 +2,3 @@ preMadeEvent              preSetSeller    050 001.00
 myOwnEvent                admin           001 001.00
 noTicketEvent             preSetSeller    000 000.00
 maxCreditEvent            maxSeller       001 001.00
-END
