@@ -1,0 +1,2 @@
+03 preMadeEvent              preSetSeller    002 001.00
+00 admin           AA 001000.00
