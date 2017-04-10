@@ -117,7 +117,7 @@ void User::buy() {
 		if( confirmTransac(question) ) {
 			cout << "Purchase successful.\n";
 			//writes out sell transaction with number of tickets sold
-			transactions.push_back(fmt2("03",title,seller->getUsername(),numTickets,currEvent.ticket_price));
+			transactions.push_back(fmt2("04",title,seller->getUsername(),numTickets,currEvent.ticket_price));
 			//writes out corresponding buy transaction with number of tickets bought
 			//transactions.push_back(fmt2("04", title, this->getUsername(),numTickets,currEvent.ticket_price));
 		}
