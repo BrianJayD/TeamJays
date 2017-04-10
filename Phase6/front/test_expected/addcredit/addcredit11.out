@@ -1,0 +1,11 @@
+Welcome to the Ticket Selling Service.
+>> Enter username:
+>> Login successful.
+>> Enter the amount of credit to add:
+>> 1000.00 credit successfully added.
+>> Enter the seller's name:
+>> Enter the event title:
+>> Enter the number of tickets ($1.00/ticket) to buy:
+>> Error: You do not have enough credit.
+>> Logged out.
+>> 

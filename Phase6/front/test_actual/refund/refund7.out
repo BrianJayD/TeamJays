@@ -1,0 +1,9 @@
+Welcome to the Ticket Selling Service.
+>> Enter username:
+>> Login successful.
+>> Enter in the user to refund:
+>> Enter in the user who is refunding:
+>> Enter in the refund amount:
+>> Error: Refunding user does not have enough funds.
+>> Logged out.
+>> 

@@ -1,0 +1,9 @@
+Welcome to the Ticket Selling Service.
+>> Enter username:
+>> Login successful.
+>> Enter the seller's name:
+>> Enter the event title:
+>> Enter the number of tickets ($0.00/ticket) to buy:
+>> Error: Not enough tickets available.
+>> Logged out.
+>> 

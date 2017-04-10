@@ -1,0 +1,8 @@
+01 brian           FS 000009.00
+02 deleteUser      FS 000010.00
+06 admin           AA 001000.00
+00 admin           AA 001000.00
+03 Movie Ticket              sellstandard    100 001.00
+00 sellstandard    SS 001000.00
+04 Movie Ticket              sellstandard    010 001.00
+00 buystandard     BS 001000.00

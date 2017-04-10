@@ -1,0 +1,5 @@
+preMadeEvent              preSetSeller    044 001.00
+myOwnEvent                admin           001 001.00
+noTicketEvent             preSetSeller    000 000.00
+maxCreditEvent            maxSeller       001 001.00
+Movie Ticket              sellstandard    007 001.00

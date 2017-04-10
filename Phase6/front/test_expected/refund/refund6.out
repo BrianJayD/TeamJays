@@ -1,0 +1,9 @@
+Welcome to the Ticket Selling Service.
+>> Enter username:
+>> Login successful.
+>> Enter in the user to refund:
+>> Enter in the user who is refunding:
+>> Enter in the refund amount:
+>> Error: Refunded user's account will be put over the max credit.
+>> Logged out.
+>> 
