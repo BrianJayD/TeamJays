@@ -1,0 +1,9 @@
+Welcome to the Ticket Selling Service.
+>> Enter username:
+>> Login successful.
+>> Enter the seller's name:
+>> Enter the event title:
+>> Enter the number of tickets ($1.00/ticket) to buy:
+>> Error: You may purchase at most 4 tickets per transaction.
+>> Logged out.
+>> 
