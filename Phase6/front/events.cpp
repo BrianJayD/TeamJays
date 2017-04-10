@@ -35,7 +35,7 @@ void loadEvents() {
 	int pos,j, i = 0;
 	while( getline(infile, str) )
 	{
-		if(str.substr(0,3).empty()) {break;}
+		if(str.empty()) {break;}
 
 		events.push_back(Event());
 
