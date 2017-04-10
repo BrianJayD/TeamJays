@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class test {
 	
-    String uFile = "current_user_accounts_file.txt";
+    String uFile = "currentaccounts.txt";
     String eFile = "availabletickets.txt"; 
     String tranFile = "transaction_file.txt";   
     //Stack s = new Stack();
