@@ -1,0 +1,19 @@
+Ticket Service
+
+HOW TO RUN (Ticket Service):
+  - Open Terminal
+  - From the ./Phase6/ directory run './ticket_service.sh'
+
+HOW TO RUN (Daily test):
+  - Open Terminal
+  - From the ./Phase6/ directory run './daily_run.sh'
+
+HOW TO RUN (Daily test):
+  - Open Terminal
+  - From the ./Phase6/ directory run './weekly_run.sh'
+
+NOTES:
+  - all input files for './daily_run.sh' and './weekly_run.sh' are in the input
+    folder
+  - errors that occurred during the integration process of the front and back
+    end are found in 'integration_error_table.odt'
