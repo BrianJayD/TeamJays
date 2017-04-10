@@ -10,7 +10,7 @@ class main {
     ArrayList<String> tStrings = tr.readFile();
 
     // This is the user accounts file and the events file
-    String uFile = "current_user_accounts_file.txt";
+    String uFile = "currentaccounts.txt";
     String eFile = "availabletickets.txt";
 
     /***** THIS IS FOR TESTING PURPOSES ******/

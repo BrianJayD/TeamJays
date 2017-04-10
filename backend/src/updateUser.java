@@ -23,7 +23,7 @@ class updateUser {
 
   public boolean checkUser(String uname) {
     transactionReader tRead =
-      new transactionReader("current_user_accounts_file.txt");
+      new transactionReader("currentaccounts.txt");
 
     // Puts current users into an array list for comparing
     ArrayList<String> usrInfo = tRead.readFile();
